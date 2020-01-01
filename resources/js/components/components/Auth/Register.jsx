@@ -1,30 +1,33 @@
 import React, {Component} from 'react';
-import {apiAxios} from '../../../axios';
+import axios from 'axios';
 import cookie from 'js-cookie';
-import {connect} from 'react-redux';
-class Login extends Component {
+
+class Register extends Component {
 
     constructor(props) {
         super(props);
         this.state={
+            name:"",
             email:"",
             password:"",
+            password_confirmation:"",
             errors:{}
         }
     }
 
     handleSubmit=(e)=>{
         e.preventDefault();
-        const {email,password}=this.state;
-        apiAxios.post('auth/login',{
+        const {name,email,password,password_confirmation}=this.state;
+        axios.post('http://127.0.0.1:8000/api/auth/register',{
+            name,
             email,
-            password
+            password,
+            password_confirmation
         })
             .then(res=>{
-                cookie.set('token',res.data.access_token);
-                this.props.setLogin(res.data.user);
+                cookie.set('token',res.data.access_token)
+                cookie.set('user',res.data.user)
                 this.props.history.push('/admin');
-
             })
             .catch(e=>{
                 this.setState({errors:e.response.data})
@@ -45,16 +48,22 @@ class Login extends Component {
                 <div className="row vh-100">
                     <div className="col-8  my-auto mx-auto">
                         <div className="card card-block p-5">
-                            <h4 className="swal2-title">Login</h4>
+                            <h4 className="swal2-title">Register</h4>
                         <form action="" onSubmit={this.handleSubmit}>
+                            <div className="form-group">
+                                <input type="text" placeholder="Name" name="name" className="form-control" onChange={this.handleInput}/>
+                            </div>
                             <div className="form-group">
                                 <input type="email" placeholder="email" name="email" className="form-control" onChange={this.handleInput}/>
                             </div>
                             <div className="form-group">
-                                 <input type="password" placeholder="password" name="password" className="form-control" onChange={this.handleInput}/>
+                                 <input type="password" placeholder="Password" name="password" className="form-control" onChange={this.handleInput}/>
                             </div>
                             <div className="form-group">
-                                <input type="submit" value="Login"  className="btn btn-primary"/>
+                                 <input type="password" placeholder="Confirm Password" name="password_confirmation" className="form-control" onChange={this.handleInput}/>
+                            </div>
+                            <div className="form-group">
+                                <input type="submit" value="Register"  className="btn btn-primary"/>
                             </div>
                         </form>
                     </div>
@@ -66,8 +75,5 @@ class Login extends Component {
 
     }
 }
-const mapDispatchToProps=dispatch=>({
-    setLogin:user=>dispatch({type:"SET_LOGIN",payload:user})
-});
 
-export default connect(null,mapDispatchToProps)(Login);
+export default Register;

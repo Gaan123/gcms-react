@@ -68989,7 +68989,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
         "class": "nav-link",
         href: "#"
-      }, "Loginb"))));
+      }, "Login"))));
     }
   }]);
 

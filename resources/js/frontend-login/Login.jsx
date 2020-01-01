@@ -7,7 +7,7 @@ class Login extends Component {
             <div>
                 <ul className="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Loginb</a>
+                        <a class="nav-link" href="#">Login</a>
                     </li>
                 </ul>
             </div>

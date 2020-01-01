@@ -2,9 +2,16 @@ import React, {Component} from "react";
 import Sidebar from "./global/Sidebar";
 import {Route, Switch,Link} from "react-router-dom";
 import DashboardComponent from "./components/Dashboard/DashboardComponent";
-
+import cookie from "js-cookie";
+import {logout} from './redux/auth/auth.action'
+import {connect} from 'react-redux';
 class App extends Component {
 
+    logOut=e=>{
+        e.preventDefault();
+        cookie.remove('token');
+        this.props.logout();
+    }
     render() {
         return (
             <>
@@ -82,30 +89,16 @@ class App extends Component {
                                 <span className="badge badge-warning navbar-badge">15</span>
                             </a>
                             <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                                <span className="dropdown-item dropdown-header">15 Notifications</span>
                                 <div className="dropdown-divider"></div>
-                                <a href="#" className="dropdown-item">
-                                    <i className="fas fa-envelope mr-2"></i> 4 new messages
-                                    <span className="float-right text-muted text-sm">3 mins</span>
-                                </a>
-                                <div className="dropdown-divider"></div>
-                                <a href="#" className="dropdown-item">
-                                    <i className="fas fa-users mr-2"></i> 8 friend requests
-                                    <span className="float-right text-muted text-sm">12 hours</span>
-                                </a>
-                                <div className="dropdown-divider"></div>
-                                <a href="#" className="dropdown-item">
-                                    <i className="fas fa-file mr-2"></i> 3 new reports
-                                    <span className="float-right text-muted text-sm">2 days</span>
-                                </a>
-                                <div className="dropdown-divider"></div>
-                                <a href="#" className="dropdown-item dropdown-footer">See All Notifications</a>
+                                <form action="" onSubmit={this.logOut} className="logout">
+                                    <button>
+                                        <i className="fa fa-door-open"></i>
+                                        logout
+                                    </button>
+                                </form>
                             </div>
                         </li>
-                        <li className="nav-item">
-                            <a className="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
-                                className="fas fa-th-large"></i></a>
-                        </li>
+
                     </ul>
                 </nav>
 
@@ -120,7 +113,7 @@ class App extends Component {
                                 </div>
                                 <div className="col-sm-6">
                                     <ol className="breadcrumb float-sm-right">
-                                        <li className="breadcrumb-item"><Link to="/home/dashboard">Home</Link></li>
+                                        <li className="breadcrumb-item"><Link to="/admin">Home</Link></li>
 
 
                                         <li className="breadcrumb-item active">Dashboard v3</li>
@@ -145,7 +138,8 @@ class App extends Component {
         );
     };
 }
-function Fuck(){
-    return (<h1>Fuck</h1>);
-}
-export default App;
+const mapDispatchToProps=dispatch=>({
+    logout:()=>dispatch(logout())
+})
+
+export default connect(null,mapDispatchToProps)(App);
